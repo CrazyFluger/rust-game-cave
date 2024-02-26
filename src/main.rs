@@ -62,40 +62,28 @@ impl<'a> Player<'a> {
     fn east(&mut self, cave: &Cave) {
         match &cave.east {
             99 => println!("На западе нет прохода!"),
-            index => {
-                println!(">>> переход в {}", index);
-                self.cave = *index
-            }
+            index => self.cave = *index,
         }
         self.steps -= 1;
     }
     fn west(&mut self, cave: &Cave) {
         match &cave.west {
             99 => println!("На востоке нет прохода!"),
-            index => {
-                println!(">>> переход в {}", index);
-                self.cave = *index
-            }
+            index => self.cave = *index,
         }
         self.steps -= 1;
     }
     fn north(&mut self, cave: &Cave) {
         match &cave.north {
             99 => println!("На севере нет прохода!"),
-            index => {
-                println!(">>> переход в {}", index);
-                self.cave = *index
-            }
+            index => self.cave = *index,
         }
         self.steps -= 1;
     }
     fn south(&mut self, cave: &Cave) {
         match &cave.south {
             99 => println!("На юге нет прохода!"),
-            index => {
-                println!(">>> переход в {}", index);
-                self.cave = *index
-            }
+            index => self.cave = *index,
         }
         self.steps -= 1;
     }
