@@ -15,6 +15,7 @@ struct Chest {
 }
 
 struct Player<'a> {
+    steps: u8,
     cave: usize,
     chest: Option<&'a Chest>,
 }
@@ -42,6 +43,7 @@ impl<'a> Player<'a> {
                 println!("Вы уже несёте сундук \"{}\"", in_hands.unwrap().description);
             },
         }
+        self.steps -= 1;
     }
     fn put(&mut self, cave: &'a Cave<'a>) {
         match &self.chest {
@@ -55,6 +57,7 @@ impl<'a> Player<'a> {
                 self.chest = None;
             },
         }
+        self.steps -= 1;
     }
     fn east(&mut self, cave: &Cave) {
         match &cave.east {
@@ -64,6 +67,7 @@ impl<'a> Player<'a> {
                 self.cave = *index
             }
         }
+        self.steps -= 1;
     }
     fn west(&mut self, cave: &Cave) {
         match &cave.west {
@@ -73,6 +77,7 @@ impl<'a> Player<'a> {
                 self.cave = *index
             }
         }
+        self.steps -= 1;
     }
     fn north(&mut self, cave: &Cave) {
         match &cave.north {
@@ -82,6 +87,7 @@ impl<'a> Player<'a> {
                 self.cave = *index
             }
         }
+        self.steps -= 1;
     }
     fn south(&mut self, cave: &Cave) {
         match &cave.south {
@@ -91,6 +97,7 @@ impl<'a> Player<'a> {
                 self.cave = *index
             }
         }
+        self.steps -= 1;
     }
 }
 
@@ -129,18 +136,17 @@ fn main() {
     ];
 
     let mut player = Player {
+        steps: 50,
         cave: 1,
         chest: None,
     };
-
-    let mut steps: u8 = 50;
 
     println!("Добро пожаловать в пещеры Rust!");
     println!("Для помощи наберите 'h' или 'help'!");
 
     loop {
         println!("================================");
-        match &steps {
+        match &player.steps {
             0 => {
                 println!("У вас кончились ходы.");
                 println!("Вы проиграли!");
@@ -180,32 +186,13 @@ fn main() {
         let cmd = cmd.trim().to_lowercase();
 
         match cmd.as_str() {
-            "t" | "take" => {
-                player.take(&cave);
-                steps -= 1;
-            },
-            "p" | "put" => {
-                player.put(&cave);
-                steps -= 1;
-            },
-            "e" | "east" => {
-                player.east(&cave);
-                steps -= 1;
-            },
-            "w" | "west" => {
-                player.west(&cave);
-                steps -= 1;
-
-            },
-            "n" | "north" => {
-                player.north(&cave);
-                steps -= 1;
-            },
-            "s" | "south" => {
-                player.south(&cave);
-                steps -= 1;
-            },
-            "h" | "help" => {
+            "t" | "take"  => player.take(&cave),
+            "p" | "put"   => player.put(&cave),
+            "e" | "east"  => player.east(&cave),
+            "w" | "west"  => player.west(&cave),
+            "n" | "north" => player.north(&cave),
+            "s" | "south" => player.south(&cave),
+            "h" | "help"  => {
                 println!("======================= HELP ============================");
                 println!("Ваша задача собрать все ящики в одной пещере за 50 шагов.");
                 println!("За один раз Вы можете переносить только один ящик.");
